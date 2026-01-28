@@ -400,6 +400,8 @@
     const lines = [];
     lines.push("FA – Resumen estructurado");
     lines.push("");
+
+    // Datos
     lines.push(`FC: ${state.hr ?? "—"} lpm`);
     lines.push(`PAS: ${state.sbp ?? "—"} mmHg`);
     lines.push(`FA confirmada en ECG: ${state.ecgConfirmed === true ? "Sí" : "No"}`);
@@ -407,25 +409,82 @@
     lines.push(`EAP/disnea grave: ${state.pulmEdema ? "Sí" : "No"}`);
     lines.push(`Alteración de conciencia: ${state.ams ? "Sí" : "No"}`);
     lines.push("");
-    lines.push(`Escenario: ${state.scenario === "unstable" ? "FA inestable" : state.scenario === "stable" ? "FA estable" : "—"}`);
 
+    // Escenario
+    const escenarioTxt =
+      state.scenario === "unstable" ? "FA inestable"
+      : state.scenario === "stable" ? "FA estable"
+      : "—";
+    lines.push(`Escenario: ${escenarioTxt}`);
+
+    // Rama clínica simple (para que el resumen “suene” clínico y no solo números)
+    if (state.scenario === "unstable") {
+      lines.push("");
+      lines.push("Prioridad (inestabilidad):");
+      lines.push("- ABC, monitorización, acceso IV, oxigenación/ventilación según necesidad.");
+      lines.push("- Considerar cardioversión eléctrica sincronizada urgente si procede.");
+      lines.push("- Buscar y tratar precipitantes/causas reversibles (dolor, infección, isquemia, hipovolemia, alteraciones iónicas, tirotoxicosis, etc.).");
+    } else if (state.scenario === "stable") {
+      lines.push("");
+      lines.push("FA estable – enfoque inicial:");
+      if (state.strategy === "rate") {
+        lines.push("- Estrategia seleccionada: control de frecuencia.");
+      } else if (state.strategy === "rhythm") {
+        lines.push("- Estrategia seleccionada: considerar control de ritmo.");
+        lines.push(`- Duración de FA: ${
+          state.afDuration === "lt48" ? "< 48 h"
+          : state.afDuration === "ge48" ? "≥ 48 h"
+          : "desconocida"
+        }`);
+        lines.push(`- Se plantea cardioversión en este episodio: ${state.needsCardioversionNow ? "Sí" : "No"}`);
+        if (state.needsCardioversionNow) {
+          lines.push("- Pericardioversión: confirmar anticoagulación peri/post según duración y riesgo; elegir eléctrica vs farmacológica según perfil y disponibilidad.");
+        }
+      }
+
+      // Manejo crónico (lo que pedías)
+      lines.push("");
+      lines.push("FA estable – manejo crónico (control de frecuencia):");
+      lines.push("- Objetivo práctico: controlar síntomas y FC (leniente vs estricto según clínica; reevaluar con ECG y control de TA/FC).");
+      lines.push("- Primera línea (habitual): betabloqueante O calcioantagonista no dihidropiridínico (verapamilo/diltiazem).");
+      lines.push("- Si sospecha/confirmación de IC con FE reducida: evitar verapamilo/diltiazem; preferir betabloqueante (según tolerancia) y considerar digoxina como coadyuvante.");
+      lines.push("- Si control insuficiente: combinar (p. ej. betabloqueante + digoxina) o ajustar dosis; vigilar bradicardia/bloqueos e hipotensión.");
+      lines.push("- Considerar control de ritmo/derivación si persisten síntomas, mala tolerancia, cardiomiopatía inducida por taquicardia, o recurrencias relevantes.");
+      lines.push("- Revisar y corregir factores modificables: alcohol, sueño/SAHS, obesidad, HTA, tiroide, fármacos simpaticomiméticos, etc.");
+      lines.push("- Seguimiento: FC/TA, ECG, función renal (si digoxina/ACOD), interacciones y adherencia.");
+    }
+
+    // Scores
     const cha = calcCHA();
     const has = calcHAS();
     lines.push("");
     lines.push(`CHA₂DS₂-VA: ${cha}`);
     lines.push(`HAS-BLED: ${has}`);
 
-    // Dosis si hay datos suficientes
+    // Anticoagulación (si hay datos suficientes)
     readPtInputs();
     const crcl = calcCrCl(state.pt.age, state.pt.weight, state.pt.scr, state.pt.sex);
-    if (cha >= 1 && crcl != null) {
-      lines.push(`CrCl (Cockcroft–Gault): ${Math.round(crcl)} ml/min`);
-      const opts = doacDecision(crcl).filter(x => x.ok);
-      if (opts.length) {
-        lines.push("Opciones de ACOD (dosis):");
-        opts.forEach(o => lines.push(`- ${o.name}: ${o.dose}`));
+
+    if (cha >= 1) {
+      lines.push("");
+      lines.push("Anticoagulación (si no hay contraindicación y según guía/local):");
+      if (crcl == null) {
+        lines.push("- Falta CrCl (Cockcroft–Gault): introduce edad/peso/creatinina/sexo para calcular dosis de ACOD.");
+      } else {
+        lines.push(`- CrCl (Cockcroft–Gault): ${Math.round(crcl)} ml/min`);
+        const opts = doacDecision(crcl).filter(x => x.ok);
+        if (opts.length) {
+          lines.push("Opciones de ACOD (dosis calculada):");
+          opts.forEach(o => lines.push(`- ${o.name}: ${o.dose}`));
+        } else {
+          lines.push("- No hay opciones de ACOD mostrables con los datos actuales.");
+        }
       }
+      lines.push("- HAS-BLED alto NO contraindica por sí solo: priorizar factores modificables y seguimiento estrecho.");
     }
+
+    lines.push("");
+    lines.push("Nota: resumen de soporte a la decisión. Ajustar a guía vigente, contraindicaciones, interacciones y protocolo local.");
 
     const ta = $("#finalSummary");
     if (ta) ta.value = lines.join("\n");
