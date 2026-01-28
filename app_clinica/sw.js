@@ -1,0 +1,1 @@
+// Service Worker (pendiente). No activo aún.
