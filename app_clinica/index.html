@@ -3,481 +3,165 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>FA – Soporte a la decisión (V1.0)</title>
-
-  <!-- CSS -->
+  <title>MFyU · Esqueleto V1</title>
   <link rel="stylesheet" href="./css/styles.css" />
-
-  <!-- PWA / Iconos -->
   <link rel="manifest" href="./manifest.json" />
   <meta name="theme-color" content="#0b5ea8" />
-
-  <!-- Icono para iOS (Añadir a pantalla de inicio) -->
-  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
-
-  <!-- Favicon (navegador) -->
-  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="./icons/icon-512.png" />
 </head>
-
 <body>
-  <header class="app-header">
-    <div class="brand">
-      <div class="logo" aria-hidden="true">
-        <svg viewBox="0 0 64 64" width="38" height="38" role="img" aria-hidden="true">
-          <defs>
-            <linearGradient id="g" x1="0" y1="64" x2="64" y2="0">
-              <stop offset="0" stop-color="#027a48" stop-opacity=".35"/>
-              <stop offset="1" stop-color="#0b5ea8" stop-opacity=".35"/>
-            </linearGradient>
-          </defs>
-          <rect x="3" y="3" width="58" height="58" rx="14" fill="url(#g)" stroke="rgba(11,94,168,.18)"/>
-          <path d="M14 34h10l4-8 7 18 5-10h10" fill="none" stroke="#0b5ea8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="46" cy="34" r="5" fill="#027a48" fill-opacity=".7"/>
-        </svg>
-      </div>
-
-      <div class="brand-text">
-        <div class="brand-title">FA – Soporte a la decisión</div>
-        <div class="brand-subtitle">Urgencias / Atención Primaria · V1.0</div>
-      </div>
+  <header class="topbar">
+    <div class="brand">MFyU</div>
+    <div class="top-actions">
+      <button class="icon-btn" aria-label="Favoritos">★</button>
+      <button class="icon-btn" aria-label="Ajustes">⚙</button>
     </div>
-
-    <button id="btnAbout" class="icon-btn" aria-label="Acerca de" title="Acerca de">i</button>
   </header>
 
-  <main class="container">
-    <section class="card">
-      <div class="stepper">
-        <div id="stepName" class="step-name">Datos iniciales</div>
-        <div class="step-controls">
-          <button id="btnBack" class="btn btn-secondary" type="button">Atrás</button>
-          <button id="btnNext" class="btn btn-primary" type="button">Siguiente</button>
-        </div>
-      </div>
+  <main class="app-shell">
+    <nav class="screen-nav" aria-label="Pantallas demo">
+      <button class="chip is-active" data-target="home">Home</button>
+      <button class="chip" data-target="category">Listado</button>
+      <button class="chip" data-target="module">Módulo FA</button>
+      <button class="chip" data-target="tool">Herramienta</button>
+      <button class="chip" data-target="summary">Resumen</button>
+    </nav>
 
-      <div id="alerts" class="alerts" aria-live="polite"></div>
-
-      <noscript>
-        <div class="no-js-warning">
-          Esta app necesita JavaScript para funcionar (pantallas, navegación y cálculos).
-        </div>
-      </noscript>
-    </section>
-
-    <!-- STEP 1 -->
-    <section class="card step" data-step="1">
-      <h2>Datos clínicos iniciales</h2>
-      <p class="muted">Objetivo: clasificar el escenario (inestable / estable) y orientar el siguiente paso.</p>
+    <section class="screen is-active" data-screen="home">
+      <div class="search-main">Buscar protocolos, procedimientos, herramientas o fármacos…</div>
 
       <div class="grid-2">
-        <div class="field">
-          <label for="hr">Frecuencia cardiaca (lpm)</label>
-          <input id="hr" inputmode="numeric" placeholder="p.ej. 145" />
-        </div>
-
-        <div class="field">
-          <label for="sbp">PAS (mmHg)</label>
-          <input id="sbp" inputmode="numeric" placeholder="p.ej. 95" />
-        </div>
-
-        <div class="field">
-          <label class="check">
-            <input id="ecgConfirmed" type="checkbox" />
-            FA confirmada en ECG
-          </label>
-        </div>
-
-        <div class="field">
-          <label class="check">
-            <input id="ischemicPain" type="checkbox" />
-            Dolor torácico isquémico persistente
-          </label>
-        </div>
-
-        <div class="field">
-          <label class="check">
-            <input id="pulmEdema" type="checkbox" />
-            Edema agudo de pulmón / disnea grave
-          </label>
-        </div>
-
-        <div class="field">
-          <label class="check">
-            <input id="ams" type="checkbox" />
-            Alteración del nivel de conciencia atribuible al ritmo
-          </label>
-        </div>
+        <article class="tile">Protocolos</article>
+        <article class="tile">Procedimientos</article>
+        <article class="tile">Herramientas</article>
+        <article class="tile">Vademécum</article>
       </div>
 
-      <div class="refnote">Bibliografía: ESC 2024 (FA).</div>
-    </section>
-
-    <!-- STEP 2 -->
-    <section class="card step" data-step="2">
-      <h2>Escenario clínico</h2>
-      <p class="muted">Confirma el escenario actual. Esta decisión determina el contenido del siguiente bloque.</p>
-
-      <div class="choice-list cards">
-        <label class="choice-card">
-          <input type="radio" name="scenario" value="unstable" />
-          <div class="choice-content">
-            <div class="choice-title">FA con inestabilidad hemodinámica</div>
-            <div class="choice-desc">Soporte y cardioversión eléctrica sincronizada cuando esté indicada.</div>
-          </div>
-        </label>
-
-        <label class="choice-card">
-          <input type="radio" name="scenario" value="stable" />
-          <div class="choice-content">
-            <div class="choice-title">FA estable</div>
-            <div class="choice-desc">Orientar estrategia (frecuencia/ritmo), riesgo tromboembólico y plan.</div>
-          </div>
-        </label>
-      </div>
-
-      <div class="refnote">Bibliografía: ESC 2024 (FA).</div>
-    </section>
-
-    <!-- STEP 3 -->
-    <section class="card step" data-step="3">
-      <h2>Manejo de FA inestable</h2>
-
-      <div class="callout danger">
-        <div class="callout-title">Prioridad: estabilización</div>
-        <ul>
-          <li>Soporte ABC, monitorización, acceso IV, oxigenación/ventilación según necesidad.</li>
-          <li>Cardioversión eléctrica sincronizada urgente cuando esté indicada.</li>
-          <li>Tratar factores precipitantes y causas reversibles.</li>
+      <section class="card">
+        <h2>Recientes</h2>
+        <ul class="list">
+          <li>Fibrilación auricular</li>
+          <li>HTA en urgencias</li>
+          <li>Dolor torácico</li>
         </ul>
-      </div>
+      </section>
 
-      <details class="details">
-        <summary>Cardioversión eléctrica: checklist de seguridad</summary>
-        <div class="details-body">
-          <ul>
-            <li>Confirmar sincronización.</li>
-            <li>Posición de parches y contacto adecuados.</li>
-            <li>Sedación/analgesia si el estado clínico lo permite.</li>
-            <li>Escalado de energía según protocolo y equipo disponible.</li>
-          </ul>
-        </div>
-      </details>
+      <section class="card">
+        <h2>Favoritos</h2>
+        <ul class="list">
+          <li>CHA2DS2-VASc</li>
+          <li>Ajuste de ACOD</li>
+        </ul>
+      </section>
 
-      <div class="refnote">Bibliografía: ESC 2024 (FA) · Protocolo local aportado.</div>
+      <section class="quick-access">Acceso rápido: FA · NAC · Sepsis · EPOC · TEV</section>
     </section>
 
-    <!-- STEP 4 -->
-    <section class="card step" data-step="4">
-      <h2>Reevaluación tras estabilización</h2>
-      <p class="muted">Selecciona el estado actual. Cada opción conduce a una rama distinta.</p>
-
-      <div class="choice-list cards">
-        <label class="choice-card">
-          <input type="radio" name="postState" value="stillUnstable" />
-          <div class="choice-content">
-            <div class="choice-title">Persisten signos de inestabilidad</div>
-            <div class="choice-desc">Continuar soporte y considerar cardioversión según contexto clínico.</div>
-          </div>
-        </label>
-
-        <label class="choice-card">
-          <input type="radio" name="postState" value="stableRVR" />
-          <div class="choice-content">
-            <div class="choice-title">FA estable con RVR</div>
-            <div class="choice-desc">Control de frecuencia y/o considerar control de ritmo si procede.</div>
-          </div>
-        </label>
-
-        <label class="choice-card">
-          <input type="radio" name="postState" value="stableNoRVR" />
-          <div class="choice-content">
-            <div class="choice-title">FA estable sin RVR</div>
-            <div class="choice-desc">Planificar estrategia, anticoagulación y seguimiento.</div>
-          </div>
-        </label>
-
-        <label class="choice-card">
-          <input type="radio" name="postState" value="sinus" />
-          <div class="choice-content">
-            <div class="choice-title">Ritmo sinusal recuperado</div>
-            <div class="choice-desc">Evaluar anticoagulación y plan de seguimiento.</div>
-          </div>
-        </label>
+    <section class="screen" data-screen="category">
+      <h1>Protocolos</h1>
+      <div class="search-secondary">Buscar dentro de Protocolos…</div>
+      <div class="chips-row">
+        <span class="chip soft is-active">AP</span>
+        <span class="chip soft">Urgencias</span>
+        <span class="chip soft">UHD</span>
+        <span class="chip soft">Respiratorio</span>
+        <span class="chip soft">Cardiovascular</span>
+        <span class="chip soft">Infeccioso</span>
       </div>
-
-      <div class="refnote">Bibliografía: ESC 2024 (FA).</div>
+      <div class="stack">
+        <article class="item-row">
+          <div>
+            <strong>Fibrilación auricular</strong>
+            <p>Arritmia supraventricular frecuente · AP / Urgencias</p>
+          </div>
+          <span>★</span>
+        </article>
+        <article class="item-row">
+          <div>
+            <strong>Dolor torácico</strong>
+            <p>Abordaje sindrómico inicial · Urgencias</p>
+          </div>
+        </article>
+      </div>
     </section>
 
-    <!-- STEP 5 -->
-    <section class="card step" data-step="5">
-      <h2>FA estable: control inicial</h2>
-
-      <div class="choice-list cards">
-        <label class="choice-card">
-          <input type="radio" name="strategy" value="rate" />
-          <div class="choice-content">
-            <div class="choice-title">Control de frecuencia</div>
-            <div class="choice-desc">Estrategia inicial frecuente en paciente estable.</div>
-          </div>
-        </label>
-
-        <label class="choice-card">
-          <input type="radio" name="strategy" value="rhythm" />
-          <div class="choice-content">
-            <div class="choice-title">Considerar control de ritmo</div>
-            <div class="choice-desc">Valorar cardioversión según duración, perfil y guía.</div>
-          </div>
-        </label>
-      </div>
-
-      <div id="cvBlock" class="subcard" hidden>
-        <div class="subcard-head">Cardioversión (módulo pericardioversión)</div>
-
-        <div class="grid-2">
-          <div class="field">
-            <label for="afDuration">Duración de FA</label>
-            <select id="afDuration">
-              <option value="unknown">Desconocida</option>
-              <option value="lt48">&lt; 48 horas</option>
-              <option value="ge48">≥ 48 horas</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label class="check">
-              <input id="needsCardioversionNow" type="checkbox" />
-              Se plantea cardioversión en este episodio
-            </label>
-          </div>
-        </div>
-
-        <details class="details" id="cvDetails" hidden>
-          <summary>Pericardioversión: puntos clave</summary>
-          <div class="details-body">
-            <ul>
-              <li>Evaluar riesgo tromboembólico y duración del episodio.</li>
-              <li>Plan de anticoagulación peri y post-procedimiento según guía.</li>
-              <li>Elección de cardioversión eléctrica o farmacológica según perfil.</li>
-            </ul>
-          </div>
-        </details>
-      </div>
-
-      <div class="refnote">Bibliografía: ESC 2024 (FA) · EHRA (ACOD).</div>
-    </section>
-
-    <!-- STEP 6 -->
-    <section class="card step" data-step="6">
-      <h2>Riesgo tromboembólico y hemorrágico</h2>
-      <p class="muted">Cálculo en tiempo real. HAS-BLED identifica factores modificables y el seguimiento.</p>
-
-      <div class="grid-2">
+    <section class="screen" data-screen="module">
+      <article class="module-header card">
         <div>
-          <h3>CHA₂DS₂-VA</h3>
-          <div class="score-box">
-            <div class="score" id="scoreCHA">0</div>
-            <div class="score-label">Puntuación</div>
-          </div>
-
-          <div class="grid-1">
-            <label class="check"><input type="checkbox" id="cha_hf" /> Insuficiencia cardiaca</label>
-            <label class="check"><input type="checkbox" id="cha_htn" /> Hipertensión</label>
-            <label class="check"><input type="checkbox" id="cha_dm" /> Diabetes mellitus</label>
-            <label class="check"><input type="checkbox" id="cha_vasc" /> Enfermedad vascular</label>
-            <label class="check"><input type="checkbox" id="cha_stroke" /> Ictus/AIT/TE previa (2 puntos)</label>
-
-            <div class="field">
-              <label for="cha_age">Edad</label>
-              <select id="cha_age">
-                <option value="lt65">&lt; 65</option>
-                <option value="65-74">65–74 (1 punto)</option>
-                <option value="ge75">≥ 75 (2 puntos)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="callout info" id="chaInterpretation"></div>
+          <small>Dónde estás: Protocolos / Cardiovascular</small>
+          <h1>Fibrilación auricular</h1>
         </div>
-
-        <div>
-          <h3>HAS-BLED</h3>
-          <div class="score-box">
-            <div class="score" id="scoreHAS">0</div>
-            <div class="score-label">Puntuación</div>
-          </div>
-
-          <div class="grid-1">
-            <label class="check"><input type="checkbox" id="has_htn" /> HTA no controlada</label>
-            <label class="check"><input type="checkbox" id="has_renal" /> Función renal anormal</label>
-            <label class="check"><input type="checkbox" id="has_liver" /> Función hepática anormal</label>
-            <label class="check"><input type="checkbox" id="has_stroke" /> Ictus previo</label>
-            <label class="check"><input type="checkbox" id="has_bleed" /> Sangrado previo / predisposición</label>
-            <label class="check"><input type="checkbox" id="has_inr" /> INR lábil (si AVK)</label>
-            <label class="check"><input type="checkbox" id="has_age" /> Edad &gt; 65</label>
-            <label class="check"><input type="checkbox" id="has_drugs" /> Antiagregantes/AINE concomitantes</label>
-            <label class="check"><input type="checkbox" id="has_alcohol" /> Alcohol (relevante)</label>
-          </div>
-
-          <div class="callout warn" id="hasInterpretation"></div>
-          <div class="callout success" id="hasModifiables"></div>
+        <div class="module-actions">
+          <button class="chip soft">Vista rápida</button>
+          <button class="chip soft">Vista flujo</button>
+          <button class="chip" id="openDrawerBtn">Abrir drawer clínico</button>
         </div>
+      </article>
+
+      <article class="card intro-block">
+        <p><strong>Problema:</strong> paciente con FA en contexto de guardia.</p>
+        <p><strong>Qué te juegas:</strong> inestabilidad, tromboembolismo y sangrado.</p>
+        <p><strong>Acción:</strong> ir a resumen operativo.</p>
+      </article>
+
+      <div class="accordion">
+        <details open><summary>Entrada</summary><p>Qué estás valorando.</p></details>
+        <details open><summary>Alertas</summary><p>Inestabilidad y banderas rojas.</p></details>
+        <details><summary>Orientación diagnóstica</summary><p>Sospecha, preguntas y pruebas.</p></details>
+        <details><summary>Clasificación</summary><p>Riesgo, gravedad y escenario.</p></details>
+        <details open><summary>Qué hacer ahora</summary><p>Conducta operativa principal.</p></details>
+        <details><summary>Tratamiento</summary><p>Dosis y matices.</p></details>
+        <details><summary>Cuándo derivar / ingresar</summary><p>Criterios de destino.</p></details>
+        <details><summary>Seguimiento</summary><p>Vigilancia y reevaluación.</p></details>
+        <details><summary>Errores frecuentes</summary><p>Lo que más se falla en práctica real.</p></details>
+        <details><summary>Herramientas relacionadas</summary><p>Escalas y cálculos asociados.</p></details>
+        <details><summary>Bibliografía</summary><p>Guías y fecha de revisión.</p></details>
       </div>
 
-      <div id="anticoagBlock" class="subcard" hidden>
-        <div class="subcard-head">Anticoagulación: dosis automática</div>
-        <p class="muted small">Introduce los datos mínimos para calcular aclaramiento (Cockcroft–Gault) y proponer dosis final.</p>
-
-        <div class="grid-2">
-          <div class="field">
-            <label for="pt_age">Edad (años)</label>
-            <input id="pt_age" inputmode="numeric" placeholder="p.ej. 78" />
-          </div>
-
-          <div class="field">
-            <label for="pt_weight">Peso (kg)</label>
-            <input id="pt_weight" inputmode="numeric" placeholder="p.ej. 72" />
-          </div>
-
-          <div class="field">
-            <label for="pt_scr">Creatinina (mg/dL)</label>
-            <input id="pt_scr" inputmode="decimal" placeholder="p.ej. 1.2" />
-          </div>
-
-          <div class="field">
-            <label for="pt_sex">Sexo</label>
-            <select id="pt_sex">
-              <option value="male">Hombre</option>
-              <option value="female">Mujer</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="grid-1">
-          <label class="check">
-            <input id="dd_strong_dual" type="checkbox" />
-            Inhibidor potente combinado P-gp + CYP3A4 (si aplica en tu guía)
-          </label>
-          <label class="check">
-            <input id="dd_pgp" type="checkbox" />
-            Inhibidor P-gp relevante (si aplica en tu guía)
-          </label>
-        </div>
-
-        <div class="callout info" id="crclBox">
-          <div class="callout-title">Aclaramiento estimado (Cockcroft–Gault)</div>
-          <div><strong id="crclValue">—</strong> ml/min</div>
-        </div>
-
-        <div id="doacCards" class="doac-grid"></div>
-      </div>
-
-      <div class="refnote">Bibliografía: ESC 2024 (FA) · EHRA (ACOD) · Documento aportado (dosis/ajustes).</div>
+      <button class="fab">Resumen final</button>
     </section>
 
-    <!-- STEP 7 -->
-    <section class="card step" data-step="7">
-      <h2>Plan clínico y recomendaciones finales</h2>
-      <p class="muted">Resumen estructurado. Copiable. Sin almacenamiento de datos.</p>
-
-      <div class="summary-actions">
-        <button id="btnCopy" class="btn btn-secondary" type="button">Copiar resumen</button>
-        <button id="btnReset" class="btn btn-danger" type="button">Reiniciar</button>
+    <section class="screen" data-screen="tool">
+      <h1>Herramienta · CHA2DS2-VASc</h1>
+      <p class="muted">Sirve para estimar el riesgo embólico en FA.</p>
+      <div class="card">
+        <p>Campos de entrada (demo): edad, HTA, DM, ictus previo…</p>
       </div>
+      <div class="result card">
+        <h2>Resultado: 3 puntos</h2>
+        <p>Riesgo embólico elevado.</p>
+        <p>Valorar anticoagulación si no hay contraindicación.</p>
+      </div>
+    </section>
 
-      <textarea id="finalSummary" class="summary" readonly></textarea>
-
-      <!-- BLOQUE NUEVO: TRATAMIENTO CRÓNICO -->
-      <details class="details mt">
-        <summary>Tratamiento crónico (FA estable): recomendaciones rápidas</summary>
-        <div class="details-body">
-          <div class="callout info">
-            <div class="callout-title">Objetivo de control de frecuencia</div>
-            <ul>
-              <li>Objetivo práctico inicial: <strong>FC en reposo &lt;110 lpm</strong> (control “indulgente”); si persisten síntomas, considerar control más estricto.</li>
-            </ul>
-          </div>
-
-          <div class="callout">
-            <div class="callout-title">Elección de fármaco para control de frecuencia (según perfil)</div>
-            <ul>
-              <li><strong>FEVI ≤40% (ICFEr):</strong> iniciar/continuar <strong>betabloqueante o digoxina</strong>. Evitar diltiazem/verapamilo.</li>
-              <li><strong>FEVI &gt;40%:</strong> opciones de inicio/continuación: <strong>betabloqueante, digoxina, diltiazem o verapamilo</strong>.</li>
-            </ul>
-          </div>
-
-          <div class="callout warn">
-            <div class="callout-title">Si control insuficiente / necesidad de intensificar</div>
-            <ul>
-              <li>Considerar <strong>tratamiento combinado</strong> (p. ej. <strong>betabloqueante + digoxina</strong> o <strong>diltiazem/verapamilo + digoxina</strong>), vigilando bradicardia.</li>
-              <li>La combinación <strong>betabloqueante + diltiazem/verapamilo</strong> solo bajo prescripción de especialista y con control (p. ej. ECG ambulatorio) para descartar bradicardia.</li>
-            </ul>
-          </div>
-
-          <div class="callout success">
-            <div class="callout-title">Seguimiento</div>
-            <ul>
-              <li>Reevaluación periódica: síntomas, FC/TA, ECG y ajuste de tratamiento.</li>
-              <li>Optimizar comorbilidades y factores de riesgo (marco AF-CARE).</li>
-            </ul>
-          </div>
-
-          <div class="refnote">Bibliografía: ESC 2024 (FA) – control de frecuencia y vía clínica en FA permanente.</div>
-        </div>
-      </details>
-
-      <div class="refnote">Bibliografía: ESC 2024 (FA) · EHRA (ACOD) · Protocolos locales aportados.</div>
+    <section class="screen" data-screen="summary">
+      <h1>Resumen clínico final</h1>
+      <div class="card">
+        <p><strong>Situación:</strong> FA estable con RVR moderada.</p>
+        <p><strong>Clasificación:</strong> riesgo embólico alto, hemorrágico moderado.</p>
+        <p><strong>Conducta:</strong> control de frecuencia + valorar ACOD.</p>
+        <p><strong>Tratamiento:</strong> pauta propuesta según función renal.</p>
+        <p><strong>Reevaluación:</strong> 24-48h o antes si empeora.</p>
+        <p><strong>Derivar si:</strong> inestabilidad, mala respuesta o duda diagnóstica.</p>
+      </div>
     </section>
   </main>
 
-  <!-- ABOUT MODAL -->
-  <div id="aboutBackdrop" class="backdrop" hidden></div>
-  <dialog id="aboutModal" class="modal" aria-labelledby="aboutTitle">
-    <div class="modal-header">
-      <div>
-        <div id="aboutTitle" class="modal-title">Acerca de</div>
-        <div class="muted small">Instrucciones · Autores · Bibliografía</div>
-      </div>
-      <button id="btnCloseAbout" class="icon-btn" aria-label="Cerrar">×</button>
-    </div>
-
-    <div class="modal-body">
-      <h3>Instrucciones generales de uso</h3>
-      <ol>
-        <li>Introduce datos iniciales y confirma el escenario.</li>
-        <li>Si es inestable, sigue el bloque estructurado y reevalúa.</li>
-        <li>En estabilidad, define estrategia, riesgo y plan.</li>
-        <li>Revisa el resumen final y ajusta a tu entorno asistencial.</li>
-      </ol>
-
-      <h3 class="mt">Autores</h3>
-      <ul class="small">
-        <li>Guillermo J. Olivero Sanjuanelo</li>
-        <li>Kelly E. Escorcia Reyes</li>
-        <li>Julio F. Ospino Arias</li>
-        <li>Jorge A. Gracia García</li>
-        <li>Jorvi J. Aguilar Valero</li>
-      </ul>
-
-      <h3 class="mt">Bibliografía clínica (base)</h3>
-      <ul class="small">
-        <li><strong>ESC 2024</strong> – Guía sobre manejo de FA.</li>
-        <li>EHRA – Practical Guide sobre uso de ACOD.</li>
-        <li>Protocolos locales aportados por el usuario.</li>
-      </ul>
-
-      <h3 class="mt">Documentación</h3>
-      <ul class="small">
-        <li>
-          <a href="https://github.com/olsanju-hub/app_clinica/blob/main/app_clinica/README.md"
-             target="_blank" rel="noopener">
-            📄 Abrir README (documentación completa)
-          </a>
-        </li>
+  <aside id="clinicalDrawer" class="drawer" aria-hidden="true">
+    <div class="drawer-panel">
+      <header>
+        <h2>Drawer clínico</h2>
+        <button id="closeDrawerBtn" class="icon-btn" aria-label="Cerrar">✕</button>
+      </header>
+      <ul class="list">
+        <li>Escala rápida</li>
+        <li>Ficha terapéutica</li>
+        <li>Perla docente</li>
+        <li>Tabla antibióticos</li>
+        <li>Resumen final</li>
       </ul>
     </div>
-  </dialog>
+  </aside>
 
-  <script src="./js/app.js"></script>
+  <script src="./js/app.js" defer></script>
 </body>
 </html>
